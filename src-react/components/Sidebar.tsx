@@ -73,19 +73,19 @@ export const Sidebar: React.FC<SidebarProps> = ({
     <motion.aside
       initial={{ x: -300, opacity: 0 }}
       animate={{ x: 0, opacity: 1 }}
-      className="w-80 bg-gray-50/80 backdrop-blur-xl border-r border-gray-200/50 flex flex-col h-screen"
+      className="w-80 bg-gray-50/80 dark:bg-gray-900/95 backdrop-blur-xl border-r border-gray-200/50 dark:border-gray-700/50 flex flex-col h-screen transition-colors duration-200"
     >
       {/* Header */}
-      <div className="p-5 border-b border-gray-200/50">
+      <div className="p-5 border-b border-gray-200/50 dark:border-gray-700/50">
         <div className="flex items-center gap-3 mb-4">
           <div className="w-10 h-10 bg-gradient-to-br from-primary-600 to-primary-500 rounded-2xl flex items-center justify-center shadow-soft">
             <MessageSquare className="w-5 h-5 text-white" />
           </div>
           <div>
-            <h1 className="text-lg font-display font-semibold text-gray-900">
+            <h1 className="text-lg font-display font-semibold text-gray-900 dark:text-gray-100">
               Claude
             </h1>
-            <p className="text-xs text-gray-500">AI Coding Assistant</p>
+            <p className="text-xs text-gray-500 dark:text-gray-400">AI Coding Assistant</p>
           </div>
         </div>
 
@@ -93,7 +93,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
           onClick={onAddGeneralConversation}
-          className="w-full mb-2 bg-white text-gray-700 font-medium py-2.5 px-4 rounded-2xl flex items-center justify-center gap-2 border border-gray-200 shadow-soft hover:bg-gray-50 transition-all duration-200"
+          className="w-full mb-2 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 font-medium py-2.5 px-4 rounded-2xl flex items-center justify-center gap-2 border border-gray-200 dark:border-gray-700 shadow-soft hover:bg-gray-50 dark:hover:bg-gray-700 transition-all duration-200"
         >
           <MessageSquare className="w-4 h-4" />
           New Conversation
@@ -111,15 +111,15 @@ export const Sidebar: React.FC<SidebarProps> = ({
       </div>
 
       {/* Search */}
-      <div className="p-4 border-b border-gray-200/50">
+      <div className="p-4 border-b border-gray-200/50 dark:border-gray-700/50">
         <div className="relative">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 dark:text-gray-500" />
           <input
             type="text"
             placeholder="Search projects..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-4 py-2.5 bg-white border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all"
+            className="w-full pl-10 pr-4 py-2.5 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-sm text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all"
           />
         </div>
       </div>
@@ -128,7 +128,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
       <div className="flex-1 overflow-y-auto p-3">
         {generalConversations.length > 0 && (
           <div className="mb-4">
-            <div className="flex items-center gap-2 px-3 py-2 text-xs font-medium text-gray-500 uppercase tracking-wider">
+            <div className="flex items-center gap-2 px-3 py-2 text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
               <MessageSquare className="w-3 h-3" />
               General Chats
             </div>
@@ -175,7 +175,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
         {regularProjects.length > 0 && (
           <div>
-            <div className="flex items-center gap-2 px-3 py-2 text-xs font-medium text-gray-500 uppercase tracking-wider">
+            <div className="flex items-center gap-2 px-3 py-2 text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
               <Folder className="w-3 h-3" />
               Projects
             </div>
@@ -204,8 +204,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
         {filteredProjects.length === 0 && (
           <div className="text-center py-12 px-4">
-            <Folder className="w-12 h-12 text-gray-300 mx-auto mb-3" />
-            <p className="text-sm text-gray-500">
+            <Folder className="w-12 h-12 text-gray-300 dark:text-gray-600 mx-auto mb-3" />
+            <p className="text-sm text-gray-500 dark:text-gray-400">
               {searchQuery ? 'No projects found' : 'No projects yet'}
             </p>
           </div>
@@ -213,8 +213,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
       </div>
 
       {/* Footer */}
-      <div className="p-4 border-t border-gray-200/50">
-        <div className="flex items-center gap-2 text-xs text-gray-500">
+      <div className="p-4 border-t border-gray-200/50 dark:border-gray-700/50">
+        <div className="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400">
           <Clock className="w-3 h-3" />
           <span>{projects.length} projects</span>
         </div>
@@ -261,14 +261,14 @@ const ProjectItem: React.FC<ProjectItemProps> = ({
       <div
         className={`group relative rounded-2xl transition-all duration-200 ${
           isActive
-            ? 'bg-primary-50 border border-primary-200 shadow-soft'
-            : 'hover:bg-white hover:shadow-soft'
+            ? 'bg-primary-50 dark:bg-primary-900/20 border border-primary-200 dark:border-primary-800 shadow-soft'
+            : 'hover:bg-white dark:hover:bg-gray-800 hover:shadow-soft'
         }`}
       >
         <div className="flex items-center gap-2 p-3">
           <button
             onClick={onToggle}
-            className="flex-shrink-0 w-5 h-5 flex items-center justify-center text-gray-400 hover:text-gray-600 transition-colors"
+            className="flex-shrink-0 w-5 h-5 flex items-center justify-center text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
           >
             {isExpanded ? (
               <ChevronDown className="w-4 h-4" />
@@ -283,18 +283,18 @@ const ProjectItem: React.FC<ProjectItemProps> = ({
           >
             <Folder
               className={`w-4 h-4 flex-shrink-0 ${
-                isActive ? 'text-primary-600' : 'text-amber-500'
+                isActive ? 'text-primary-600 dark:text-primary-400' : 'text-amber-500 dark:text-amber-400'
               }`}
             />
             <div className="flex-1 min-w-0">
               <p
                 className={`text-sm font-medium truncate ${
-                  isActive ? 'text-primary-900' : 'text-gray-900'
+                  isActive ? 'text-primary-900 dark:text-primary-100' : 'text-gray-900 dark:text-gray-100'
                 }`}
               >
                 {project.name}
               </p>
-              <p className="text-xs text-gray-500 truncate">{project.path}</p>
+              <p className="text-xs text-gray-500 dark:text-gray-400 truncate">{project.path}</p>
             </div>
           </div>
 
@@ -304,7 +304,7 @@ const ProjectItem: React.FC<ProjectItemProps> = ({
                 e.stopPropagation();
                 setShowMenu(!showMenu);
               }}
-              className="w-6 h-6 flex items-center justify-center text-gray-400 hover:text-gray-600 opacity-0 group-hover:opacity-100 transition-all rounded-lg hover:bg-gray-100"
+              className="w-6 h-6 flex items-center justify-center text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 opacity-0 group-hover:opacity-100 transition-all rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700"
             >
               <MoreVertical className="w-4 h-4" />
             </button>
@@ -315,7 +315,7 @@ const ProjectItem: React.FC<ProjectItemProps> = ({
                   initial={{ opacity: 0, scale: 0.95, y: -10 }}
                   animate={{ opacity: 1, scale: 1, y: 0 }}
                   exit={{ opacity: 0, scale: 0.95, y: -10 }}
-                  className="absolute right-0 top-8 w-40 bg-white rounded-xl shadow-soft-xl border border-gray-200 py-1 z-50"
+                  className="absolute right-0 top-8 w-40 bg-white dark:bg-gray-800 rounded-xl shadow-soft-xl border border-gray-200 dark:border-gray-700 py-1 z-50"
                   onMouseLeave={() => setShowMenu(false)}
                 >
                   <button
@@ -405,8 +405,8 @@ const ConversationItem: React.FC<ConversationItemProps> = ({
       onClick={onSelect}
       className={`group flex items-center justify-between px-3 py-2 rounded-xl cursor-pointer transition-all ${
         isActive
-          ? 'bg-primary-100 text-primary-900'
-          : 'text-gray-600 hover:bg-gray-50'
+          ? 'bg-primary-100 dark:bg-primary-900/30 text-primary-900 dark:text-primary-100'
+          : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800'
       }`}
     >
       <div className="flex items-center gap-2 flex-1 min-w-0">
@@ -418,7 +418,7 @@ const ConversationItem: React.FC<ConversationItemProps> = ({
           e.stopPropagation();
           onDelete();
         }}
-        className="opacity-0 group-hover:opacity-100 text-red-500 hover:text-red-600 transition-all"
+        className="opacity-0 group-hover:opacity-100 text-red-500 dark:text-red-400 hover:text-red-600 dark:hover:text-red-300 transition-all"
       >
         <Trash2 className="w-3 h-3" />
       </button>

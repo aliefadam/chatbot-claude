@@ -122,7 +122,7 @@ export const InputArea: React.FC<InputAreaProps> = ({
   };
 
   return (
-    <div className="border-t border-gray-200 bg-white/80 backdrop-blur-xl">
+    <div className="border-t border-gray-200 dark:border-gray-700 bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl transition-colors duration-200">
       {/* Attachments Preview */}
       <AnimatePresence>
         {attachments.length > 0 && (
@@ -148,7 +148,7 @@ export const InputArea: React.FC<InputAreaProps> = ({
       {/* Input Container */}
       <div className="px-6 py-4">
         <div className="max-w-4xl mx-auto">
-          <div className="relative glass-effect rounded-3xl shadow-soft-lg overflow-hidden">
+          <div className="relative glass-effect dark:bg-gray-800/50 rounded-3xl shadow-soft-lg overflow-hidden border border-gray-200/50 dark:border-gray-700/50">
             <div className="flex items-end gap-2 p-2">
               {/* Textarea */}
               <div className="flex-1 min-w-0">
@@ -161,7 +161,7 @@ export const InputArea: React.FC<InputAreaProps> = ({
                   placeholder="Ask Claude to help with your code..."
                   disabled={disabled || isLoading}
                   rows={1}
-                  className="w-full px-4 py-3 bg-transparent border-none resize-none focus:outline-none text-gray-900 placeholder-gray-400 max-h-[200px]"
+                  className="w-full px-4 py-3 bg-transparent border-none resize-none focus:outline-none text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 max-h-[200px]"
                   style={{ minHeight: '52px' }}
                 />
               </div>
@@ -174,7 +174,7 @@ export const InputArea: React.FC<InputAreaProps> = ({
                   whileTap={{ scale: 0.95 }}
                   onClick={handleAttachFile}
                   disabled={disabled || isLoading}
-                  className="w-10 h-10 flex items-center justify-center text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-xl transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-10 h-10 flex items-center justify-center text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-xl transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                   title="Attach file"
                 >
                   <Paperclip className="w-5 h-5" />
@@ -186,7 +186,7 @@ export const InputArea: React.FC<InputAreaProps> = ({
                   whileTap={{ scale: 0.95 }}
                   onClick={handleAttachImage}
                   disabled={disabled || isLoading}
-                  className="w-10 h-10 flex items-center justify-center text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-xl transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-10 h-10 flex items-center justify-center text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-xl transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                   title="Attach image"
                 >
                   <ImageIcon className="w-5 h-5" />
@@ -212,7 +212,7 @@ export const InputArea: React.FC<InputAreaProps> = ({
           </div>
 
           {/* Helper Text */}
-          <p className="text-xs text-gray-500 text-center mt-3">
+          <p className="text-xs text-gray-500 dark:text-gray-400 text-center mt-3">
             Claude can make mistakes. Please double-check responses.
           </p>
         </div>
@@ -254,7 +254,7 @@ const AttachmentChip: React.FC<AttachmentChipProps> = ({
       initial={{ scale: 0, opacity: 0 }}
       animate={{ scale: 1, opacity: 1 }}
       exit={{ scale: 0, opacity: 0 }}
-      className="group relative flex items-center gap-2 pl-2 pr-3 py-2 bg-white border border-gray-200 rounded-xl shadow-soft hover:shadow-soft-lg transition-all"
+      className="group relative flex items-center gap-2 pl-2 pr-3 py-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-soft hover:shadow-soft-lg transition-all"
     >
       {isImage ? (
         <img
@@ -263,16 +263,16 @@ const AttachmentChip: React.FC<AttachmentChipProps> = ({
           className="w-10 h-10 object-cover rounded-lg"
         />
       ) : (
-        <div className="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center">
-          <Paperclip className="w-5 h-5 text-gray-500" />
+        <div className="w-10 h-10 bg-gray-100 dark:bg-gray-700 rounded-lg flex items-center justify-center">
+          <Paperclip className="w-5 h-5 text-gray-500 dark:text-gray-300" />
         </div>
       )}
 
       <div className="flex-1 min-w-0">
-        <p className="text-sm font-medium text-gray-900 truncate max-w-[150px]">
+        <p className="text-sm font-medium text-gray-900 dark:text-gray-100 truncate max-w-[150px]">
           {attachment.name}
         </p>
-        <p className="text-xs text-gray-500">
+        <p className="text-xs text-gray-500 dark:text-gray-400">
           {(attachment.size / 1024).toFixed(1)} KB
         </p>
       </div>
@@ -281,7 +281,7 @@ const AttachmentChip: React.FC<AttachmentChipProps> = ({
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.9 }}
         onClick={onRemove}
-        className="w-6 h-6 flex items-center justify-center text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+        className="w-6 h-6 flex items-center justify-center text-gray-400 hover:text-red-600 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors"
       >
         <X className="w-4 h-4" />
       </motion.button>

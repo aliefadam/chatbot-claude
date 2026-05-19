@@ -36,6 +36,10 @@
     @apply bg-white/80 backdrop-blur-xl border border-gray-200/50;
   }
 
+  .dark .glass-effect {
+    @apply bg-gray-800/80 border-gray-700/50;
+  }
+
   .card-hover {
     @apply transition-all duration-200 hover:-translate-y-0.5;
   }

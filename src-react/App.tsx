@@ -26,6 +26,17 @@ declare global {
       selectImage: () => Promise<{ canceled: boolean; filePaths: string[] }>;
       readFile: (path: string) => Promise<{ success: boolean; data: ArrayBuffer }>;
       readTextFile: (path: string) => Promise<{ success: boolean; content?: string; error?: string }>;
+      listDirectory: (path: string) => Promise<{
+        success: boolean;
+        items?: Array<{
+          name: string;
+          path: string;
+          isDirectory: boolean;
+          size: number;
+          modified: string | null;
+        }>;
+        error?: string;
+      }>;
       getFileInfo: (path: string) => Promise<{ success: boolean; info: any }>;
       createDirectory: (path: string) => Promise<{ success: boolean; error?: string }>;
       writeFile: (path: string, content: string) => Promise<{ success: boolean; error?: string }>;
@@ -56,6 +67,7 @@ function App() {
   const [showSettings, setShowSettings] = useState(false);
   const [usageStats, setUsageStats] = useState<UsageInfo | null>(null);
   const [loadingUsage, setLoadingUsage] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(false);
   const [deleteDialog, setDeleteDialog] = useState<
     | { type: 'project'; id: string }
     | { type: 'conversation'; id: string; projectId: string }
@@ -239,6 +251,22 @@ function App() {
   useEffect(() => {
     loadInitialData();
   }, []);
+
+  // Load and apply dark mode preference
+  useEffect(() => {
+    const savedDarkMode = localStorage.getItem('darkMode');
+    if (savedDarkMode !== null) {
+      const isDark = savedDarkMode === 'true';
+      setIsDarkMode(isDark);
+      document.documentElement.classList.toggle('dark', isDark);
+    }
+  }, []);
+
+  // Apply dark mode class to document
+  useEffect(() => {
+    document.documentElement.classList.toggle('dark', isDarkMode);
+    localStorage.setItem('darkMode', isDarkMode.toString());
+  }, [isDarkMode]);
 
   const loadInitialData = async () => {
     try {
@@ -471,6 +499,59 @@ function App() {
     return conversation.title;
   };
 
+  const buildProjectContext = async (projectPath: string) => {
+    try {
+      const listResult = await window.electronAPI.listDirectory(projectPath);
+      if (!listResult.success || !listResult.items) {
+        return `Project path: ${projectPath}\nUnable to read project directory.`;
+      }
+
+      const items = listResult.items;
+      const topLevel = items
+        .slice(0, 30)
+        .map((item) => `${item.isDirectory ? '[DIR]' : '[FILE]'} ${item.name}`)
+        .join('\n');
+
+      const keyFileNames = [
+        'README.md',
+        'readme.md',
+        'package.json',
+        'composer.json',
+        'requirements.txt',
+        'pyproject.toml',
+        'go.mod',
+        'Cargo.toml',
+        '.env.example',
+      ];
+
+      const keyFiles = items.filter((item) => !item.isDirectory && keyFileNames.includes(item.name));
+      const keyFileChunks: string[] = [];
+
+      for (const keyFile of keyFiles.slice(0, 4)) {
+        try {
+          const read = await window.electronAPI.readTextFile(keyFile.path);
+          if (read.success && read.content) {
+            const trimmed = read.content.slice(0, 3500);
+            keyFileChunks.push(
+              `--- ${keyFile.name} ---\n${trimmed}${read.content.length > trimmed.length ? '\n...[truncated]' : ''}`
+            );
+          }
+        } catch {
+          // ignore per-file read failure
+        }
+      }
+
+      return [
+        `Project root: ${projectPath}`,
+        'Top-level structure:',
+        topLevel || '(empty)',
+        keyFileChunks.length > 0 ? `\nKey file contents:\n${keyFileChunks.join('\n\n')}` : '',
+      ].join('\n');
+    } catch {
+      return `Project path: ${projectPath}\nUnable to gather project context.`;
+    }
+  };
+
   const handleRetryLastRequest = async () => {
     if (isLoading || !lastUserRequest) return;
     await handleSendMessage(lastUserRequest.content, lastUserRequest.attachments || []);
@@ -583,6 +664,7 @@ function App() {
         role: msg.role,
         content: msg.content,
       })) || [];
+      const projectContext = projectPath ? await buildProjectContext(projectPath) : '';
 
       const systemInstruction = `You are a coding assistant running inside a desktop IDE.
 You MUST always respond in Indonesian (Bahasa Indonesia) regardless of the user's language.
@@ -603,6 +685,12 @@ Rules:
 - If no file changes are needed, do not include <file_ops>.`;
 
       messages.unshift({ role: 'user', content: `[SYSTEM]\n${systemInstruction}` });
+      if (projectContext) {
+        messages.unshift({
+          role: 'user',
+          content: `[PROJECT_CONTEXT]\nGunakan context project berikut sebagai sumber utama sebelum menjawab.\n${projectContext}`,
+        });
+      }
       messages.push({ role: 'user', content });
 
       // Setup streaming listener
@@ -736,6 +824,10 @@ Rules:
     }
   };
 
+  const handleToggleDarkMode = () => {
+    setIsDarkMode(!isDarkMode);
+  };
+
   // Get current data
   const currentProject = projects.find((p) => p.id === currentProjectId);
   const currentConversation = currentProjectId
@@ -745,7 +837,7 @@ Rules:
   const modelName = apiConfig?.model?.replace('claude-', '').replace('-4-6', '-4') || 'Sonnet 4';
 
   return (
-    <div className="flex h-screen bg-white overflow-hidden">
+    <div className="flex h-screen bg-white dark:bg-gray-900 overflow-hidden transition-colors duration-200">
       {/* Sidebar */}
       <Sidebar
         projects={projects}
@@ -774,6 +866,8 @@ Rules:
           onOpenSettings={() => setShowSettings(true)}
           usageStats={usageStats}
           onCheckUsage={handleCheckUsage}
+          isDarkMode={isDarkMode}
+          onToggleDarkMode={handleToggleDarkMode}
         />
 
         {/* Chat Area */}

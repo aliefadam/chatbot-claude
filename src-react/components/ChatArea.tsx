@@ -178,7 +178,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
           className={`inline-block max-w-[85%] rounded-3xl px-5 py-4 ${
             isUser
               ? 'bg-gradient-to-r from-primary-600 to-primary-500 text-white shadow-soft'
-              : 'bg-white border border-gray-200 text-gray-900 shadow-soft'
+              : 'bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-gray-100 shadow-soft'
           }`}
         >
           {!isUser && message.fileOperations && message.fileOperations.length > 0 && (
@@ -213,9 +213,9 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
             isUser ? 'flex-row-reverse' : 'flex-row'
           }`}
         >
-          <span className="text-xs text-gray-500">{time}</span>
+          <span className="text-xs text-gray-500 dark:text-gray-400">{time}</span>
           {!isUser && !message.streaming && formatWorked(message.workedMs) && (
-            <span className="text-xs text-gray-500">{formatWorked(message.workedMs)}</span>
+            <span className="text-xs text-gray-500 dark:text-gray-400">{formatWorked(message.workedMs)}</span>
           )}
           {!isUser && !message.streaming && (
             <motion.button
