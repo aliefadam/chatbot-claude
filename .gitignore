@@ -1,0 +1,14 @@
+node_modules/
+dist/
+dist-react/
+*.log
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+.vscode/
+.idea/
+.env
+.env.*
+!.env.example

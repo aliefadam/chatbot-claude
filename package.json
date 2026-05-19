@@ -1,0 +1,53 @@
+{
+  "name": "claude-desktop",
+  "version": "1.0.0",
+  "description": "Claude Desktop Application with chat history and file attachments",
+  "main": "src/main/main.js",
+  "scripts": {
+    "dev": "vite",
+    "build:react": "vite build && node scripts/fix-electron-assets.js",
+    "preview": "vite preview",
+    "electron:dev": "electron . --enable-logging",
+    "electron:start": "npm run build:react && electron .",
+    "build": "npm run build:react && electron-builder --win --x64 --dir",
+    "package": "npm run build:react && electron-packager . \"Claude Desktop\" --platform=win32 --arch=x64 --out=dist --overwrite --icon=assets/icon.ico",
+    "build:desktop": "npm run build:react && npm run package"
+  },
+  "author": "Claude Desktop",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^25.9.0",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^6.0.2",
+    "autoprefixer": "^10.4.17",
+    "electron": "^33.0.0",
+    "electron-builder": "^24.13.3",
+    "electron-packager": "^17.1.2",
+    "postcss": "^8.4.35",
+    "tailwindcss": "^3.4.1",
+    "typescript": "^6.0.3",
+    "vite": "^8.0.13"
+  },
+  "dependencies": {
+    "electron-log": "^5.2.4",
+    "framer-motion": "^12.39.0",
+    "lucide-react": "^1.16.0",
+    "react": "^19.2.6",
+    "react-dom": "^19.2.6"
+  },
+  "build": {
+    "appId": "com.claude.desktop",
+    "productName": "Claude Desktop",
+    "directories": {
+      "output": "dist"
+    },
+    "win": {
+      "target": "dir"
+    },
+    "files": [
+      "src/**/*",
+      "assets/**/*"
+    ]
+  }
+}
